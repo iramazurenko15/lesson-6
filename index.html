@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+<script>
+
+//  Задача 1
+//  Объекты могут быть использованы для построения различных структур данных. Часто встречающаяся структура – список (не путайте с массивом). Список – связанный набор объектов, где первый объект содержит ссылку на второй, второй – на третий, и т.п.
+// var list = {   value: 1,   rest: {     value: 2,     rest: {       value: 3,       rest: null     }   } }; Списки удобны тем, что они могут делиться частью своей структуры. Например, можно сделать два списка, {value: 0, rest: list} и {value: -1, rest: list}, где list – это ссылка на ранее объявленную переменную. Это два независимых списка, при этом у них есть общая структура list, которая включает три последних элемента каждого из них. Кроме того, оригинальный список также сохраняет свои свойства как отдельный список из трёх элементов. Напишите функцию arrayToList, которая строит такую структуру, получая в качестве аргумента [1, 2, 3], а также функцию listToArray, которая создаёт массив из списка. Также напишите вспомогательную функцию prepend, которая получает элемент и создаёт новый список, где этот элемент добавлен спереди к первоначальному списку, и функцию nth, которая в качестве аргументов принимает список и число, а возвращает элемент на заданной позиции в списке, или же undefined в случае отсутствия такого элемента.
+
+
+var list = {
+  value: 1,
+  rest: {
+    value: 2,
+    rest: {
+      value: 3,
+      rest: null
+    }
+  }
+};
+
+
+var array = [1,2,3];
+
+function arrayToList(array) {
+  var list = null;
+
+  for (i=array.length-1; i>=0; i--) {
+   list = {value:array[i], rest:list};
+  }
+
+return list;
+}
+
+function listToArray(list) {
+  var arr = [];
+
+  while (list) {
+    arr.push(list.value);
+    list = list.rest;
+  }
+
+return arr;
+}
+var prepend = function (el, list) {
+  list = {value:el, rest:list};
+  return list;
+
+}
+// функция nth через цикл
+var nth = function (list, index) {
+  var arr = [];
+  while (list) {
+    arr.push(list.value);
+    list = list.rest;
+  }
+  for (i=0; i<arr.length; i++) {
+    if (index == i) return arr[i];    
+  }
+
+}
+
+// функция nth через рекурсию
+var nth = function (list, index) {
+  if (!list) {
+    return undefined;
+  }
+  else if (index===0) {
+    return list.value;
+  }
+  else return nth(list.rest, index-1);
+}
+
+console.log(listToArray(list));
+console.log(arrayToList(array));
+console.log(prepend(0, list));
+console.log(nth(list, 1));
+
+// Задача 2
+// • Напишите две функции, reverseArray и reverseArrayInPlace. Первая получает массив как аргумент и выдаёт новый массив, с обратным порядком элементов. Вторая работает как оригинальный метод reverse – она меняет порядок элементов на обратный в том массиве, который был ей передан в качестве аргумента. Не используйте стандартный метод reverse.
+function reverseArray(arr) {
+  var revArr = [];
+  return revArr = arr.map(function(i, item){
+    return revArr[i] = arr[arr.length-1 -  item];
+  })
+}
+
+function reverseArrayinPlace(arr) {
+ var revArr = []; lenArr = arr.length;
+ for (var i=0; i<lenArr; i++) {
+  revArr[i] = arr.pop();  
+ }
+ arr = revArr.map(function(i, item) {
+  arr.push(revArr[item]);
+  return arr[item];
+ });
+ return arr;
+}
+
+// Задача 3
+// Реализовать функцию pick(obj, keys), которая принимает аргументами объект и массив строк (названия ключей). Возвращает новый объект, куда вошли все ключи, указанные в массиве keys, и соответствующие значения из объекта obj. Если в объекте obj, нет ключа, указанного в массиве keys, в результирующем объекте этот ключ не должен присутствовать.
+function pick(obj, key) {
+  var newObj = {};
+  for (i=0; i<key.length; i++) {
+    for (propValue in obj) {
+      if (key[i] == propValue) newObj[key[i]] = obj[propValue];
+    }
+  }
+  return newObj;
+}
+
+var user = {
+    name: 'Sergey',
+    age: 30,
+    email: 'sergey@gmail.com',
+    friends: ['Sveta', 'Artem']
+}
+console.log(pick(user, ['name', 'age', 'second_name']))
+
+</script>
+
+
+</body>
+</html>
